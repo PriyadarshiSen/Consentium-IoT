@@ -10,11 +10,16 @@ api = Api(app)
 
 api_key = secrets.token_urlsafe(16).upper()  # generate API key
 
+
 # class add_data(Resource):
 #     def get(self, entry_val):
 #         conn = db_connect.connect()
 #         conn.execute("INSERT INTO sensor_values (created_at,field) VALUES(?, ?)", (str(datetime.datetime.now()), entry_val))
 #         return '256'
+
+@app.route("/")
+def hello():
+    return "Your API key is: %s" % api_key
 
 
 class show_data(Resource):
@@ -34,8 +39,10 @@ class add_data(Resource):
         if str(data['api_key']).upper() == api_key:
             conn = db_connect.connect()
             conn.execute("INSERT INTO sensor_values (created_at,field) VALUES(?, ?)",
-                     (str(datetime.datetime.now()), data['field']))
-        return 256
+                         (str(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')), data['field']))
+            return {'data': 'inserted'}
+        else:
+            return {'data': 'insertion error'}
 
 
 # api.add_resource(add_data, '/update/field=<entry_val>') # old api method
@@ -44,4 +51,4 @@ api.add_resource(add_data, '/update', endpoint='update')
 
 if __name__ == '__main__':
     print("Your API key is:", api_key)
-    app.run()
+    app.run(host='192.168.1.6', port=5000)
