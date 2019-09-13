@@ -3,7 +3,6 @@
 # --- Date: 12th September 2019
 # --- Version: 1.0
 # --- Python Ver: 3.6
-# --- Details At: https://iotbytes.wordpress.com/store-mqtt-data-from-sensors-into-sql-database/
 # ------------------------------------------
 
 # ====================================================
