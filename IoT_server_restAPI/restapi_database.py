@@ -82,12 +82,12 @@ class AddData(Resource):
     def get():
         parser = reqparse.RequestParser()
         parser.add_argument('api_key', type=str)
-        parser.add_argument('field1', type=str)
+        parser.add_argument('field', type=str)
         data = parser.parse_args()
         if str(data['api_key']).upper() == api_key_write:
             conn = db_connect.connect()
             conn.execute("INSERT INTO sensor_values (created_at,field) VALUES(?, ?)",
-                         (str(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')), data['field1']))
+                         (str(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')), data['field']))
             return {"data": 'inserted'}
         else:
             return {"data": 'insertion error'}
@@ -103,4 +103,4 @@ if __name__ == '__main__':
     client.connect(broker_url, broker_port)
     client.subscribe(topic)
     client.loop_start()
-    app.run()
+    app.run(host='192.168.0.103', port=5000)
